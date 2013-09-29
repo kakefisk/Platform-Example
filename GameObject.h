@@ -2,7 +2,6 @@
 #define GAMEOBJECT_H
 
 #include "sprite.h"
-#include <string>
 
 class GameObject
 {
@@ -20,8 +19,8 @@ class GameObject
     int yPrev;
 
     public:
-    GameObject(int, int, std::string);
-    void step();
+    GameObject(int, int, const char*);
+    virtual void step();
     void draw(SDL_Surface*);
     bool collision(GameObject);
 };

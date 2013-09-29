@@ -12,7 +12,7 @@ class Level
 
     public:
     Level(int, int);
-    void loadLevel(int[]);
+    void loadLevel(std::vector<int>);
     void step();
     void draw(SDL_Surface*);
 };

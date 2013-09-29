@@ -7,6 +7,7 @@
 class Player : public GameObject
 {
     public:
+    Player(int, int, const char*);
     bool key_pressed(SDLKey);
     void step();
 };

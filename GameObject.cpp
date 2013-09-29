@@ -1,6 +1,6 @@
 #include "GameObject.h"
 
-GameObject::GameObject(int x, int y, std::string filename) : x(x), y(y), xVel(0), yVel(0), sprite(filename), xStart(x), yStart(y), xPrev(x), yPrev(y) {}
+GameObject::GameObject(int x, int y, const char* filename) : x(x), y(y), xVel(0), yVel(0), sprite(filename), xStart(x), yStart(y), xPrev(x), yPrev(y) {}
 
 void GameObject::step()
 {

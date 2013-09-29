@@ -6,7 +6,7 @@ Game::Game(int width, int height, int bpp, const char* title) : width(width), he
     screen = SDL_SetVideoMode(width, height, bpp, SDL_SWSURFACE);
     SDL_WM_SetCaption(title, NULL);
 
-    int data[] = {
+    std::vector<int> data = {
         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
         1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
         1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
@@ -20,7 +20,7 @@ Game::Game(int width, int height, int bpp, const char* title) : width(width), he
         1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
         1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
         1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-        1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
     level.loadLevel(data);
 }
@@ -44,9 +44,10 @@ void Game::step()
         }
 
         level.step();
-        level.draw(screen);
 
         SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0xFF, 0xFF, 0xFF));
+        level.draw(screen);
+
         SDL_Flip(screen);
     }
 }

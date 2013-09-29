@@ -2,7 +2,6 @@
 #define SPRITE_H
 
 #include "SDL.h"
-#include <string>
 
 class Sprite
 {
@@ -11,11 +10,11 @@ class Sprite
     int height;
 
     public:
-    Sprite(std::string);
-    ~Sprite();
+    Sprite(const char*);
+    void free();
 
     void setSprite(SDL_Surface*);
-    void setSprite(std::string);
+    void setSprite(const char*);
     SDL_Surface* getSprite();
 
     int w();

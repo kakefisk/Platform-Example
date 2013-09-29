@@ -1,34 +1,33 @@
 #include "sprite.h"
 #include "SDL_image.h"
 
-Sprite::Sprite(std::string filename) : sprite(NULL), width(0), height(0)
+Sprite::Sprite(const char* filename) : sprite(NULL), width(0), height(0)
 {
     setSprite(filename);
 }
 
-Sprite::~Sprite()
+void Sprite::free()
 {
     SDL_FreeSurface(sprite);
 }
 
 void Sprite::setSprite(SDL_Surface* sprite)
 {
-    SDL_FreeSurface(sprite);
+    SDL_FreeSurface(this->sprite);
     this->sprite = sprite;
     width = sprite->w;
     height = sprite->h;
 }
 
-void Sprite::setSprite(std::string filename)
+void Sprite::setSprite(const char* filename)
 {
-    SDL_Surface* image = IMG_Load(filename.c_str());
+    SDL_Surface* image = IMG_Load(filename);
     if (image != NULL)
     {
         SDL_Surface* optimizedImage = SDL_DisplayFormatAlpha(image);
         if (optimizedImage != NULL)
         {
             setSprite(optimizedImage);
-            SDL_FreeSurface(optimizedImage);
         }
         SDL_FreeSurface(image);
     }
