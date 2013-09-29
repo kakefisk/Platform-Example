@@ -22,7 +22,7 @@ class GameObject
     GameObject(int, int, const char*);
     virtual void step();
     void draw(SDL_Surface*);
-    bool collision(GameObject);
+    bool collision(GameObject&);
 };
 
 #endif

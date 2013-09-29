@@ -12,19 +12,28 @@ void Player::step()
 {
     if (key_pressed(SDLK_LEFT))
     {
-        xVel = -4;
+        xVel = -1;
     }
+    else if (key_pressed(SDLK_RIGHT))
+    {
+        xVel = 1;
+    }
+    else
+    {
+        xVel = 0;
+    }
+
     if (key_pressed(SDLK_UP))
     {
-        yVel = -4;
+        yVel = -1;
     }
-    if (key_pressed(SDLK_RIGHT))
+    else if (key_pressed(SDLK_DOWN))
     {
-        xVel = 4;
+        yVel = 1;
     }
-    if (key_pressed(SDLK_DOWN))
+    else
     {
-        yVel = 4;
+        yVel = 0;
     }
     GameObject::step();
 }

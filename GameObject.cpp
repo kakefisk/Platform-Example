@@ -18,7 +18,7 @@ void GameObject::draw(SDL_Surface* destination)
     SDL_BlitSurface(sprite.getSprite(), NULL, destination, &offset);
 }
 
-bool GameObject::collision(GameObject obj)
+bool GameObject::collision(GameObject& obj)
 {
     return (y + sprite.h() >= obj.y && y <= obj.y + obj.sprite.h() && x + sprite.w() >= obj.x && x <= obj.x + obj.sprite.w());
 }

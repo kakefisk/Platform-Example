@@ -6,7 +6,7 @@
 
 class Level
 {
-    std::vector<GameObject> instances;
+    std::vector<GameObject*> instances;
     int width;
     int height;
 

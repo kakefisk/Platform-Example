@@ -49,5 +49,6 @@ void Game::step()
         level.draw(screen);
 
         SDL_Flip(screen);
+        SDL_Delay(10);
     }
 }
