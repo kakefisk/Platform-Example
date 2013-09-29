@@ -38,12 +38,12 @@ SDL_Surface* Sprite::getSprite()
     return sprite;
 }
 
-int Sprite::w()
+uint Sprite::w()
 {
     return width;
 }
 
-int Sprite::h()
+uint Sprite::h()
 {
     return height;
 }

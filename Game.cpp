@@ -1,10 +1,13 @@
 #include "Game.h"
+#include "ResourceManager.h"
 
-Game::Game(int width, int height, int bpp, const char* title) : width(width), height(height), bpp(bpp), title(title), screen(NULL), level(20, 15)
+Game::Game(uint width, uint height, uint bpp, const char* title) : width(width), height(height), bpp(bpp), title(title), screen(NULL), level(20, 15)
 {
     SDL_Init(SDL_INIT_EVERYTHING);
     screen = SDL_SetVideoMode(width, height, bpp, SDL_SWSURFACE);
     SDL_WM_SetCaption(title, NULL);
+
+    loadResources();
 
     std::vector<int> data = {
         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -51,4 +54,10 @@ void Game::step()
         SDL_Flip(screen);
         SDL_Delay(10);
     }
+}
+
+void Game::loadResources()
+{
+    ResourceManager::addSprite("sprWall", "res/wall.png");
+    ResourceManager::addSprite("sprBall", "res/ball.png");
 }

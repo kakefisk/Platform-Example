@@ -6,19 +6,19 @@
 class Sprite
 {
     SDL_Surface* sprite;
-    int width;
-    int height;
+    uint width;
+    uint height;
 
     public:
-    Sprite(const char*);
+    Sprite(const char* filename);
     void free();
 
-    void setSprite(SDL_Surface*);
-    void setSprite(const char*);
+    void setSprite(SDL_Surface* destination);
+    void setSprite(const char* filename);
     SDL_Surface* getSprite();
 
-    int w();
-    int h();
+    uint w();
+    uint h();
 
 };
 

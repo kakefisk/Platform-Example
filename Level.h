@@ -7,14 +7,14 @@
 class Level
 {
     std::vector<GameObject*> instances;
-    int width;
-    int height;
+    uint width;
+    uint height;
 
     public:
-    Level(int, int);
-    void loadLevel(std::vector<int>);
+    Level(uint width, uint height);
+    void loadLevel(std::vector<int> data);
     void step();
-    void draw(SDL_Surface*);
+    void draw(SDL_Surface* destination);
 };
 
 #endif

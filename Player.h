@@ -1,14 +1,19 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "SDL.h"
 #include "GameObject.h"
+#include "SDL.h"
 
 class Player : public GameObject
 {
+    int speed;
+    int vSpeed;
+
     public:
-    Player(int, int, const char*);
-    bool key_pressed(SDLKey);
+    bool onGround;
+
+    Player(int x, int y, SDL_Surface* sprite);
+    bool key_pressed(SDLKey key);
     void step();
 };
 

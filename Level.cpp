@@ -1,29 +1,32 @@
-#include "level.h"
-#include <cmath>
+#include "Level.h"
 #include "Player.h"
+#include "ResourceManager.h"
 
-Level::Level(int width, int height) : width(width), height(height) {}
+#include <cmath>
+#include <string>
+
+Level::Level(uint width, uint height) : width(width), height(height) {}
 
 void Level::loadLevel(std::vector<int> data)
 {
-    for (int i = 0; i < data.size(); i++)
+    for (uint i = 0; i < data.size(); i++)
     {
         int x = (i % width)*16;
         int y = floor(i/width)*16;
         if (data[i] == 1)
         {
-            instances.push_back(new GameObject(x, y, "res/wall.png"));
+            instances.push_back(new GameObject(x, y, ResourceManager::getSprite(std::string("sprWall"))));
         }
         else if (data[i] == 2)
         {
-            instances.push_back(new Player(x, y, "res/ball.png"));
+            instances.push_back(new Player(x, y, ResourceManager::getSprite(std::string("sprBall"))));
         }
     }
 }
 
 void Level::step()
 {
-    for (int i = 0; i < instances.size(); i++)
+    for (uint i = 0; i < instances.size(); i++)
     {
         instances[i]->step();
     }
@@ -31,7 +34,7 @@ void Level::step()
 
 void Level::draw(SDL_Surface* destination)
 {
-    for (int i = 0; i < instances.size(); i++)
+    for (uint i = 0; i < instances.size(); i++)
     {
         instances[i]->draw(destination);
     }

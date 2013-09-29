@@ -1,7 +1,7 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
-#include "sprite.h"
+#include "SDL.h"
 
 class GameObject
 {
@@ -12,17 +12,21 @@ class GameObject
     int yVel;
 
     private:
-    Sprite sprite;
+    SDL_Surface* sprite;
+    uint width;
+    uint height;
     int xStart;
     int yStart;
     int xPrev;
     int yPrev;
 
     public:
-    GameObject(int, int, const char*);
+    GameObject(int x, int y, SDL_Surface* sprite);
     virtual void step();
-    void draw(SDL_Surface*);
-    bool collision(GameObject&);
+    void draw(SDL_Surface* destination);
+    bool collision(GameObject& obj);
+    uint w();
+    uint h();
 };
 
 #endif

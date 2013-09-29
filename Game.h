@@ -1,14 +1,14 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <string>
 #include "Level.h"
+#include <string>
 
 class Game
 {
-    int width;
-    int height;
-    int bpp;
+    uint width;
+    uint height;
+    uint bpp;
     std::string title;
 
     SDL_Surface* screen;
@@ -17,13 +17,13 @@ class Game
     Level level;
 
     public:
-    Game(int, int, int, const char*);
+    Game(uint width, uint height, uint bpp, const char* filename);
     ~Game();
 
     void step();
 
     private:
-    void apply_surface(int, int, SDL_Surface*, SDL_Surface*);
+    void loadResources();
 };
 
 #endif
