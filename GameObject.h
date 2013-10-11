@@ -1,20 +1,16 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
+#include "VisualObject.h"
 #include "SDL.h"
 
-class GameObject
+class GameObject : public VisualObject
 {
     public:
-    int x;
-    int y;
-    int xVel;
-    int yVel;
+    float xVel;
+    float yVel;
 
     private:
-    SDL_Surface* sprite;
-    uint width;
-    uint height;
     int xStart;
     int yStart;
     int xPrev;
@@ -23,10 +19,8 @@ class GameObject
     public:
     GameObject(int x, int y, SDL_Surface* sprite);
     virtual void step();
-    void draw(SDL_Surface* destination);
     bool collision(GameObject& obj);
-    uint w();
-    uint h();
+	void reset();
 };
 
 #endif

@@ -8,23 +8,24 @@ std::unordered_map<std::string, SDL_Surface*> ResourceManager::sprites;
 
 SDL_Surface* ResourceManager::getSprite(std::string key)
 {
-    return sprites[key];
+    return sprites.at(key);
 }
 
 void ResourceManager::addSprite(std::string key, std::string filename)
 {
-    sprites.insert({key, loadSprite(filename)});
+	sprites.insert(std::make_pair(key, loadSprite(filename)));
 }
 
 SDL_Surface* ResourceManager::loadSprite(std::string filename)
 {
-    SDL_Surface* optimizedImage = NULL;
-    SDL_Surface* image = IMG_Load(filename.c_str());
-    if (image != NULL)
-    {
-        optimizedImage = SDL_DisplayFormatAlpha(image);
-        if (optimizedImage != NULL) {}
-        SDL_FreeSurface(image);
-    }
-    return optimizedImage;
+	SDL_Surface* optimizedSurface = NULL;
+	SDL_Surface* loadedSurface = IMG_Load(filename.c_str());
+
+	if (loadedSurface != NULL)
+	{
+		optimizedSurface = SDL_DisplayFormat(loadedSurface);
+		SDL_FreeSurface(loadedSurface);
+	}
+
+	return optimizedSurface;
 }

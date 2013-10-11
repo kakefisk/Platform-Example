@@ -3,6 +3,7 @@
 
 #include "SDL.h"
 #include <unordered_map>
+#include <string>
 
 class ResourceManager
 {

@@ -4,8 +4,8 @@ Player::Player(int x, int y, SDL_Surface* sprite) : GameObject(x, y, sprite) {}
 
 bool Player::key_pressed(SDLKey key)
 {
-    Uint8 *keystates = SDL_GetKeyState(NULL);
-    return (keystates[key]);
+    const Uint8 *keystates = SDL_GetKeyState(NULL);
+    return keystates[key];
 }
 
 void Player::step()
@@ -23,28 +23,19 @@ void Player::step()
         xVel = 0;
     }
 
-    /*if (key_pressed(SDLK_UP))
-    {
-        yVel = -1;
-    }
-    else if (key_pressed(SDLK_DOWN))
-    {
-        yVel = 1;
-    }
-    else
-    {
-        yVel = 0;
-    }*/
-
     if (key_pressed(SDLK_SPACE) && onGround)
     {
-        yVel = -10;
+        yVel = -4;
         onGround = false;
     }
 
     if (!onGround)
     {
-        yVel += 0.1;
+        yVel += 0.2;
+		if (yVel > 4)
+		{
+			yVel = 4;
+		}
     }
 
     GameObject::step();
