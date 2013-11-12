@@ -3,6 +3,7 @@
 
 #include "VisualObject.h"
 #include "SDL.h"
+#include "Vector.h"
 
 class GameObject : public VisualObject
 {

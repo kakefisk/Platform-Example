@@ -3,6 +3,7 @@
 #include "Tile.h"
 #include "Vector.h"
 
+#include <iostream>
 #include <cmath>
 #include <string>
 
@@ -49,37 +50,8 @@ void Level::step()
 	{
 		for (uint y = starty; y <= endy; ++y)
 		{
-			int minx1 = objPlayer->x;
-			int maxx1 = objPlayer->x + objPlayer->w();
-			int miny1 = objPlayer->y;
-			int maxy1 = objPlayer->y + objPlayer->h();
-
-			int minx2 = x * tileSize;
-			int maxx2 = x * tileSize + tileSize;
-			int miny2 = y * tileSize;
-			int maxy2 = y * tileSize + tileSize;
-
-			Vector mtv = MinimumTranslationVector(AABB(Vector(minx1, miny1), Vector(maxx1, maxy1)), AABB(Vector(minx2, miny2), Vector(maxx2, maxy2)));
-			objPlayer->x += mtv.x;
-			objPlayer->y += mtv.y;
-		}
-	}
-
-	/*// Test for collision with the objPlayer and the world by finding the overlapping tiles first
-	int startx = floor(objPlayer->x / tileSize);
-	int endx = floor((objPlayer->x + objPlayer->w()) / tileSize);
-	int starty = floor(objPlayer->y / tileSize);
-	int endy = floor((objPlayer->y + objPlayer->h()) / tileSize);
-
-	// Find the minimum translation distance
-	for (uint x = startx; x <= endx; ++x)
-	{
-		for (uint y = starty; y <= endy; ++y)
-		{
 			if (isTileSolid(x, y))
 			{
-				Vector result;
-
 				int minx1 = objPlayer->x;
 				int maxx1 = objPlayer->x + objPlayer->w();
 				int miny1 = objPlayer->y;
@@ -90,110 +62,16 @@ void Level::step()
 				int miny2 = y * tileSize;
 				int maxy2 = y * tileSize + tileSize;
 
-				if (maxx1 < minx2 || minx1 > maxx2 || maxy1 < miny2 || miny1 > maxy2)
-				{
-					continue;
-				}
-
-				// Finds the shallow way out
-				Vector mtd;
-				mtd.x = maxx1 - minx2 < maxx2 - minx1 ? minx2 - maxx1 : maxx2 - minx1;
-				mtd.y = maxy1 - miny2 < maxy2 - miny1 ? miny2 - maxy1 : maxy2 - miny1;
-				if (abs(mtd.x) < abs(mtd.y))
-				{
-					mtd.y = 0;
-				}
-				else
-				{
-					mtd.x = 0;
-				}
-
-				if (mtd.x != 0)
-				{
-					objPlayer->xVel = 0;
-				}
-				if (mtd.y != 0)
-				{
-					objPlayer->yVel = 0;
-				}
-				if (mtd.y < 0) // If player has been moved up -> on the ground
+				Vector mtv = MinimumTranslationVector(AABB(Vector(minx1, miny1), Vector(maxx1, maxy1)), AABB(Vector(minx2, miny2), Vector(maxx2, maxy2)));
+				if (mtv.y < 0)
 				{
 					objPlayer->onGround = true;
 				}
-				objPlayer->x += mtd.x;
-				objPlayer->y += mtd.y;
-			}
-		}
-	}*/
-
-	/*std::vector<Vector> overlapTiles;
-	int mtdX = INT_MAX;
-	int mtdY = INT_MAX;
-	for (int x = floor((objPlayer->x - objPlayer->w() / 2) / tileSize); x <= floor((objPlayer->x + objPlayer->w() / 2) / tileSize); ++x)
-	{
-		for (int y = floor((objPlayer->y - objPlayer->h() / 2) / tileSize); y <= floor((objPlayer->y + objPlayer->h() / 2) / tileSize); ++y)
-		{
-			if (isTileSolid(x, y))
-			{
-				overlapTiles.push_back(Vector(x, y));
-				int xResult1 = x * tileSize - (objPlayer->x + objPlayer->w() / 2);
-				int xResult2 = (x * tileSize + tileSize) - (objPlayer->x - objPlayer->w() / 2);
-				int yResult1 = y * tileSize - (objPlayer->y + objPlayer->h() / 2);
-				int yResult2 = (y * tileSize + tileSize) - (objPlayer->y - objPlayer->h() / 2);
-				int overlapX = abs(xResult1) < abs(xResult2) ? xResult1 : xResult2;
-				int overlapY = abs(yResult1) < abs(yResult2) ? yResult1 : yResult2;
-				if (abs(overlapX) < abs(mtdX))
-				{
-					mtdX = overlapX;
-				}
-				if (abs(overlapY) < abs(mtdY))
-				{
-					mtdY = overlapY;
-				}
+				objPlayer->x += mtv.x;
+				objPlayer->y += mtv.y;
 			}
 		}
 	}
-
-	if (overlapTiles.size() == 0)
-	{
-		// No overlapping tiles
-	}
-	else if (overlapTiles.size() == 1)
-	{
-        // Case 1
-        if (abs(mtdX) < abs(mtdY))
-		{
-			objPlayer->x += mtdX;
-			objPlayer->xVel = 0;
-		}
-		else
-		{
-			objPlayer->y += mtdY;
-			objPlayer->yVel = 0;
-		}
-	}
-	else if (overlapTiles.size() == 3 || abs(overlapTiles.at(0).x - overlapTiles.at(1).x) == abs(overlapTiles.at(0).y - overlapTiles.at(1).y))
-	{
-		// Case 3
-		objPlayer->x += mtdX;
-		objPlayer->y += mtdY;
-		objPlayer->xVel = 0;
-		objPlayer->yVel = 0;
-	}
-	else if (overlapTiles.size() == 2)
-	{
-		// Case 2
-		if (overlapTiles.at(0).x == overlapTiles.at(1).x)
-		{
-			objPlayer->x += mtdX;
-			objPlayer->xVel = 0;
-		}
-		else
-		{
-			objPlayer->y += mtdY;
-			objPlayer->yVel = 0;
-		}
-	}*/
 
 	if (objPlayer->x < 0 || objPlayer->x > width*tileSize || objPlayer->y < 0 || objPlayer->y > height*tileSize)
 	{
@@ -251,6 +129,11 @@ Vector Level::MinimumTranslationVector(AABB a, AABB b)
         float right = bmax.x - amin.x;
         float top = bmin.y - amax.y;
         float bottom = bmax.y - amin.y;
+
+		if ((left > 0 || right < 0) || (top > 0 || bottom < 0))
+		{
+			return Vector(0, 0);
+		}
      
         if (abs(left) < right)
                 mtv.x = left;
@@ -266,22 +149,60 @@ Vector Level::MinimumTranslationVector(AABB a, AABB b)
                 mtv.y = 0;
         else
                 mtv.x = 0;
-     
+
+		if (mtv.x != 0)
+		{
+			objPlayer->xVel = 0;
+		}
+		if (mtv.y != 0)
+		{
+			objPlayer->yVel = 0;
+		}
         return mtv;
 }
 
-bool Level::AABBIntersection(AABB a, AABB b)
+bool Level::isInternalCollision(int tileI, int tileJ, Vector normal)
 {
-        if (a.max.x < b.min.x)
-                return false;
-        if (a.max.y < b.min.y)
-                return false;
-        if (a.min.x > b.max.x)
-                return false;
-        if (a.min.x > b.max.x)
-                return false;
-     
-        return true;
+	int nextTileI = tileI + normal.y;
+	int nextTileJ = tileJ + normal.x;
+
+	return isTileSolid(nextTileI, nextTileJ);
 }
+
+/*Vector MTV(GameObject &a, GameObject &b)
+{
+        Vector amin = Vector(a.x, a.y);
+        Vector amax = Vector(a.x + a.w, a.y + a.h);
+ 
+        Vector bmin = Vector(b.x, b.y);
+        Vector bmax = Vector(b.x + b.w, b.y + b.h);
+ 
+        float left   = bmin.x - amax.x;
+        float right  = bmax.x - amin.x;
+        float top    = bmin.y - amax.y;
+        float bottom = bmax.y - amin.y;
+ 
+        if ( ( left > 0 || right < 0 ) || ( top > 0 || bottom < 0 ) )
+                return Vector( 0.0f, 0.0f );
+ 
+        Vector mtv;
+ 
+        if ( fabsf( left ) < right )
+                mtv.x = left;
+        else
+                mtv.x = right;
+ 
+        if ( fabsf( top ) < bottom )
+                mtv.y = top;
+        else
+                mtv.y = bottom;
+ 
+        if ( fabsf( mtv.x ) < fabsf( mtv.y ) )
+                mtv.y = 0;
+        else
+                mtv.x = 0;
+ 
+        return mtv;
+}*/
 
 AABB::AABB(Vector min, Vector max) : min(min), max(max) {}

@@ -12,9 +12,11 @@
 *.la
 *.a
 
+# User defined
 *.dll
 *.cbp
 *.depend
 *.layout
+*.backup
 bin/
 obj/

@@ -33,6 +33,7 @@ class Level
     bool collision_ver(int x, int y, int &tileCoordX);
     bool collision_hor(int x, int y, int &tilecoordy);
     void apply_surface(int x, int y, SDL_Surface* source, SDL_Surface* destination);
+	bool isInternalCollision(int tileI, int tileJ, Vector normal);
 	Vector MinimumTranslationVector(AABB a, AABB b);
 	bool AABBIntersection(AABB a, AABB b);
 };
