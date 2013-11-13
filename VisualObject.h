@@ -2,12 +2,12 @@
 #define VISUALOBJECT_H
 
 #include "SDL.h"
+#include "Vector.h"
 
 class VisualObject
 {
     public:
-    int x;
-    int y;
+    Vector pos;
 
     private:
     SDL_Surface* sprite;
@@ -15,7 +15,7 @@ class VisualObject
     uint height;
 
     public:
-    VisualObject(int x, int y, SDL_Surface* sprite);
+    VisualObject(Vector pos, SDL_Surface* sprite);
     void draw(SDL_Surface* destination);
     uint w();
     uint h();

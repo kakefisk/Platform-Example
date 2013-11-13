@@ -8,17 +8,14 @@
 class GameObject : public VisualObject
 {
     public:
-    float xVel;
-    float yVel;
+    Vector vel;
 
     private:
-    int xStart;
-    int yStart;
-    int xPrev;
-    int yPrev;
+    Vector startPos;
+    Vector prevPos;
 
     public:
-    GameObject(int x, int y, SDL_Surface* sprite);
+    GameObject(Vector pos, SDL_Surface* sprite);
     virtual void step();
     bool collision(GameObject& obj);
 	void reset();

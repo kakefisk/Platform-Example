@@ -1,25 +1,20 @@
 #include "GameObject.h"
 
-GameObject::GameObject(int x, int y, SDL_Surface* sprite) : VisualObject(x, y, sprite), xVel(0), yVel(0), xStart(x), yStart(y), xPrev(x), yPrev(y) {}
+GameObject::GameObject(Vector pos, SDL_Surface* sprite) : VisualObject(pos, sprite), vel(Vector(0,0)), startPos(pos), prevPos(pos) {}
 
 void GameObject::step()
 {
-    xPrev = x;
-    yPrev = y;
-
-    x += xVel;
-    y += yVel;
+    prevPos = pos;
+    pos += vel;
 }
 
 bool GameObject::collision(GameObject& obj)
 {
-    return (y + h() >= obj.y && y <= obj.y + obj.h() && x + w() >= obj.x && x <= obj.x + obj.w());
+    return (pos.y + h() >= obj.pos.y && pos.y <= obj.pos.y + obj.h() && pos.x + w() >= obj.pos.x && pos.x <= obj.pos.x + obj.w());
 }
 
 void GameObject::reset()
 {
-	x = xStart;
-	y = yStart;
-	xPrev = x;
-	yPrev = y;
+	pos = startPos;
+	prevPos = pos;
 }

@@ -23,7 +23,7 @@ void Level::loadLevel(std::vector<int> data)
         }
         else if (data.at(i) == 2)
         {
-            objPlayer = new Player(x, y, ResourceManager::getSprite(std::string("sprBall")));
+            objPlayer = new Player(Vector(x,y), ResourceManager::getSprite(std::string("sprBall")));
             instances.push_back(objPlayer);
             tilemap.push_back(Tile(0, false));
         }
@@ -41,10 +41,10 @@ void Level::step()
         instances.at(i)->step();
     }
 
-	int startx = floor(objPlayer->x / tileSize);
-	int endx = floor((objPlayer->x + objPlayer->w()) / tileSize);
-	int starty = floor(objPlayer->y / tileSize);
-	int endy = floor((objPlayer->y + objPlayer->h()) / tileSize);
+	int startx = floor(objPlayer->pos.x / tileSize);
+	int endx = floor((objPlayer->pos.x + objPlayer->w()) / tileSize);
+	int starty = floor(objPlayer->pos.y / tileSize);
+	int endy = floor((objPlayer->pos.y + objPlayer->h()) / tileSize);
 
 	for (uint x = startx; x <= endx; ++x)
 	{
@@ -52,10 +52,10 @@ void Level::step()
 		{
 			if (isTileSolid(x, y))
 			{
-				int minx1 = objPlayer->x;
-				int maxx1 = objPlayer->x + objPlayer->w();
-				int miny1 = objPlayer->y;
-				int maxy1 = objPlayer->y + objPlayer->h();
+				int minx1 = objPlayer->pos.x;
+				int maxx1 = objPlayer->pos.x + objPlayer->w();
+				int miny1 = objPlayer->pos.y;
+				int maxy1 = objPlayer->pos.y + objPlayer->h();
 
 				int minx2 = x * tileSize;
 				int maxx2 = x * tileSize + tileSize;
@@ -67,13 +67,12 @@ void Level::step()
 				{
 					objPlayer->onGround = true;
 				}
-				objPlayer->x += mtv.x;
-				objPlayer->y += mtv.y;
+				objPlayer->pos += mtv;
 			}
 		}
 	}
 
-	if (objPlayer->x < 0 || objPlayer->x > width*tileSize || objPlayer->y < 0 || objPlayer->y > height*tileSize)
+	if (isOutsideScreen(objPlayer))
 	{
 		objPlayer->reset();
 	}
@@ -116,6 +115,11 @@ bool Level::isTileSolid(int x, int y)
 	return false;
 }
 
+bool Level::isOutsideScreen(GameObject* obj)
+{
+	return (obj->pos.x < 0 || obj->pos.x > width*tileSize || obj->pos.y < 0 || obj->pos.y > height*tileSize);
+}
+
 Vector Level::MinimumTranslationVector(AABB a, AABB b)
 {
         Vector amin = a.min;
@@ -152,11 +156,11 @@ Vector Level::MinimumTranslationVector(AABB a, AABB b)
 
 		if (mtv.x != 0)
 		{
-			objPlayer->xVel = 0;
+			objPlayer->vel.x = 0;
 		}
 		if (mtv.y != 0)
 		{
-			objPlayer->yVel = 0;
+			objPlayer->vel.y = 0;
 		}
         return mtv;
 }
@@ -168,41 +172,5 @@ bool Level::isInternalCollision(int tileI, int tileJ, Vector normal)
 
 	return isTileSolid(nextTileI, nextTileJ);
 }
-
-/*Vector MTV(GameObject &a, GameObject &b)
-{
-        Vector amin = Vector(a.x, a.y);
-        Vector amax = Vector(a.x + a.w, a.y + a.h);
- 
-        Vector bmin = Vector(b.x, b.y);
-        Vector bmax = Vector(b.x + b.w, b.y + b.h);
- 
-        float left   = bmin.x - amax.x;
-        float right  = bmax.x - amin.x;
-        float top    = bmin.y - amax.y;
-        float bottom = bmax.y - amin.y;
- 
-        if ( ( left > 0 || right < 0 ) || ( top > 0 || bottom < 0 ) )
-                return Vector( 0.0f, 0.0f );
- 
-        Vector mtv;
- 
-        if ( fabsf( left ) < right )
-                mtv.x = left;
-        else
-                mtv.x = right;
- 
-        if ( fabsf( top ) < bottom )
-                mtv.y = top;
-        else
-                mtv.y = bottom;
- 
-        if ( fabsf( mtv.x ) < fabsf( mtv.y ) )
-                mtv.y = 0;
-        else
-                mtv.x = 0;
- 
-        return mtv;
-}*/
 
 AABB::AABB(Vector min, Vector max) : min(min), max(max) {}
