@@ -1,6 +1,6 @@
 #include "VisualObject.h"
 
-VisualObject::VisualObject(Vector pos, SDL_Surface* sprite) : pos(pos), sprite(sprite), width(0), height(0)
+VisualObject::VisualObject(VectorI pos, SDL_Surface* sprite) : pos(pos), sprite(sprite), width(0), height(0)
 {
 	width = sprite->w;
 	height = sprite->h;

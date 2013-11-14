@@ -24,7 +24,7 @@ Game::Game(uint width, uint height, uint bpp, const char* title) : width(width),
         1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
         1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
-		std::vector<int> data(std::begin(dataArray), std::end(dataArray));
+		std::string data(std::begin(dataArray), std::end(dataArray));
     level.loadLevel(data);
 }
 

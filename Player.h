@@ -12,7 +12,7 @@ class Player : public GameObject
     public:
     bool onGround;
 
-    Player(Vector pos, SDL_Surface* sprite);
+    Player(VectorI pos, SDL_Surface* sprite);
     bool key_pressed(SDLKey key);
     void step();
 };

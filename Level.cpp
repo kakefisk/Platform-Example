@@ -11,7 +11,7 @@ int tileSize = 16;
 
 Level::Level(uint width, uint height) : width(width), height(height), objPlayer(NULL) {}
 
-void Level::loadLevel(std::vector<int> data)
+void Level::loadLevel(std::string data)
 {
     for (uint i = 0; i < data.size(); i++)
     {
@@ -23,7 +23,7 @@ void Level::loadLevel(std::vector<int> data)
         }
         else if (data.at(i) == 2)
         {
-            objPlayer = new Player(Vector(x,y), ResourceManager::getSprite(std::string("sprBall")));
+            objPlayer = new Player(VectorI(x,y), ResourceManager::getSprite(std::string("sprBall")));
             instances.push_back(objPlayer);
             tilemap.push_back(Tile(0, false));
         }
@@ -62,12 +62,13 @@ void Level::step()
 				int miny2 = y * tileSize;
 				int maxy2 = y * tileSize + tileSize;
 
-				Vector mtv = MinimumTranslationVector(AABB(Vector(minx1, miny1), Vector(maxx1, maxy1)), AABB(Vector(minx2, miny2), Vector(maxx2, maxy2)));
+				VectorI mtv = MinimumTranslationVector(AABB(VectorI(minx1, miny1), VectorI(maxx1, maxy1)), AABB(VectorI(minx2, miny2), VectorI(maxx2, maxy2)));
 				if (mtv.y < 0)
 				{
 					objPlayer->onGround = true;
 				}
-				objPlayer->pos += mtv;
+				objPlayer->pos.x += mtv.x;
+				objPlayer->pos.y += mtv.y;
 			}
 		}
 	}
@@ -120,15 +121,15 @@ bool Level::isOutsideScreen(GameObject* obj)
 	return (obj->pos.x < 0 || obj->pos.x > width*tileSize || obj->pos.y < 0 || obj->pos.y > height*tileSize);
 }
 
-Vector Level::MinimumTranslationVector(AABB a, AABB b)
+VectorI Level::MinimumTranslationVector(AABB a, AABB b)
 {
-        Vector amin = a.min;
-        Vector amax = a.max;
-        Vector bmin = b.min;
-        Vector bmax = b.max;
-     
-        Vector mtv;
-     
+        VectorI amin = a.min;
+        VectorI amax = a.max;
+        VectorI bmin = b.min;
+        VectorI bmax = b.max;
+
+        VectorI mtv;
+
         float left = bmin.x - amax.x;
         float right = bmax.x - amin.x;
         float top = bmin.y - amax.y;
@@ -136,19 +137,19 @@ Vector Level::MinimumTranslationVector(AABB a, AABB b)
 
 		if ((left > 0 || right < 0) || (top > 0 || bottom < 0))
 		{
-			return Vector(0, 0);
+			return VectorI(0, 0);
 		}
-     
+
         if (abs(left) < right)
                 mtv.x = left;
         else
                 mtv.x = right;
-     
+
         if (abs(top) < bottom)
                 mtv.y = top;
         else
                 mtv.y = bottom;
-     
+
         if (abs(mtv.x) < abs(mtv.y))
                 mtv.y = 0;
         else
@@ -165,7 +166,7 @@ Vector Level::MinimumTranslationVector(AABB a, AABB b)
         return mtv;
 }
 
-bool Level::isInternalCollision(int tileI, int tileJ, Vector normal)
+bool Level::isInternalCollision(int tileI, int tileJ, VectorI normal)
 {
 	int nextTileI = tileI + normal.y;
 	int nextTileJ = tileJ + normal.x;
@@ -173,4 +174,4 @@ bool Level::isInternalCollision(int tileI, int tileJ, Vector normal)
 	return isTileSolid(nextTileI, nextTileJ);
 }
 
-AABB::AABB(Vector min, Vector max) : min(min), max(max) {}
+AABB::AABB(VectorI min, VectorI max) : min(min), max(max) {}

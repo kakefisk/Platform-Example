@@ -9,10 +9,10 @@
 
 struct AABB
 {
-	Vector min;
-	Vector max;
+	VectorI min;
+	VectorI max;
 
-	AABB(Vector min, Vector max);
+	AABB(VectorI min, VectorI max);
 };
 
 class Level
@@ -26,14 +26,14 @@ class Level
 
     public:
     Level(uint width, uint height);
-    void loadLevel(std::vector<int> data);
+    void loadLevel(std::string data);
     void step();
     void draw(SDL_Surface* destination);
     bool isTileSolid(int x, int y);
     void apply_surface(int x, int y, SDL_Surface* source, SDL_Surface* destination);
 	bool isOutsideScreen(GameObject* obj);
-	bool isInternalCollision(int tileI, int tileJ, Vector normal);
-	Vector MinimumTranslationVector(AABB a, AABB b);
+	bool isInternalCollision(int tileI, int tileJ, VectorI normal);
+	VectorI MinimumTranslationVector(AABB a, AABB b);
 	bool AABBIntersection(AABB a, AABB b);
 };
 

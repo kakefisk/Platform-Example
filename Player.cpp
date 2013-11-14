@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(Vector pos, SDL_Surface* sprite) : GameObject(pos, sprite), speed(2) {onGround = false;}
+Player::Player(VectorI pos, SDL_Surface* sprite) : GameObject(pos, sprite), speed(2) {onGround = false;}
 
 bool Player::key_pressed(SDLKey key)
 {
@@ -16,7 +16,7 @@ void Player::step()
     }
     else if (key_pressed(SDLK_RIGHT))
     {
-        vel.y = 1;
+        vel.x = 1;
     }
     else
     {

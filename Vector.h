@@ -1,13 +1,14 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
+template <class T>
 class Vector
 {
 	public:
-    int x, y;
+    T x, y;
 
 	Vector();
-	Vector(int x, int y);
+	Vector(T x, T y);
 
 	Vector& operator = (const Vector& other);
 	Vector& operator += (const Vector& other);
@@ -23,8 +24,13 @@ class Vector
 	bool operator == (const Vector& other);
 	bool operator != (const Vector& other);
      
-	int Length() const;
+	T Length() const;
 	void Normalize();
 };
+
+#include "Vector.inl"
+
+typedef Vector<int> VectorI;
+typedef Vector<float> VectorF;
 
 #endif

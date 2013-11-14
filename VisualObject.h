@@ -7,7 +7,7 @@
 class VisualObject
 {
     public:
-    Vector pos;
+    VectorI pos;
 
     private:
     SDL_Surface* sprite;
@@ -15,7 +15,7 @@ class VisualObject
     uint height;
 
     public:
-    VisualObject(Vector pos, SDL_Surface* sprite);
+    VisualObject(VectorI pos, SDL_Surface* sprite);
     void draw(SDL_Surface* destination);
     uint w();
     uint h();
