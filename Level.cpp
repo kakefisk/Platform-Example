@@ -2,35 +2,51 @@
 #include "ResourceManager.h"
 #include "Tile.h"
 #include "Vector.h"
+#include "Utilities.h"
 
 #include <iostream>
 #include <cmath>
 #include <string>
-
-int tileSize = 16;
+#include <fstream>
 
 Level::Level(uint width, uint height) : width(width), height(height), objPlayer(NULL) {}
 
-void Level::loadLevel(std::string data)
+void Level::loadLevel(std::string filename)
 {
-    for (uint i = 0; i < data.size(); i++)
+    std::vector<uint> data;
+    std::ifstream file(filename.c_str(), std::ios::binary);
+    if (file.is_open())
     {
-        int x = (i % width)*tileSize;
-        int y = floor(i/width)*tileSize;
-        if (data.at(i) == 1)
+        //tiles
+        uint width = file.get();
+        uint height = file.get();
+        for (uint y = 0; y < height; y++)
         {
-            tilemap.push_back(Tile(1, true));
+            for (uint x = 0; x < width; x++)
+            {
+                data.push_back(file.get());
+            }
         }
-        else if (data.at(i) == 2)
+
+        //solid tiles
+        for (uint i = 0; i < file.get(); i++)
         {
-            objPlayer = new Player(VectorI(x,y), ResourceManager::getSprite(std::string("sprBall")));
-            instances.push_back(objPlayer);
-            tilemap.push_back(Tile(0, false));
+
         }
-        else
+
+        //objects
+        for (uint i = 0; i < file.get(); i++)
         {
-            tilemap.push_back(Tile(0, false));
+            uint id = file.get();
+            uint x = file.get()*tileSize;
+            uint y = file.get()*tileSize;
+            if (id == 1)
+            {
+                objPlayer = new Player(VectorI(x,y), ResourceManager::getSprite(std::string("sprBall")));
+                instances.push_back(objPlayer);
+            }
         }
+        file.close();
     }
 }
 
@@ -89,7 +105,7 @@ void Level::draw(SDL_Surface* destination)
     {
         int x = (i % width)*tileSize;
         int y = floor(i/width)*tileSize;
-        if (tilemap.at(i).id == 1)
+        if (tilemap.at(i) == 1)
         {
             apply_surface(x, y, ResourceManager::getSprite("sprWall"), destination);
         }
@@ -111,7 +127,7 @@ bool Level::isTileSolid(int x, int y)
 	int index = x + width*y;
 	if (index < tilemap.size())
 	{
-		return tilemap.at(index).solid;
+		return tilemap.isTileSolid(index);
 	}
 	return false;
 }
@@ -166,10 +182,10 @@ VectorI Level::MinimumTranslationVector(AABB a, AABB b)
         return mtv;
 }
 
-bool Level::isInternalCollision(int tileI, int tileJ, VectorI normal)
+bool Level::isInternalCollision(uint tileI, uint tileJ, VectorI normal)
 {
-	int nextTileI = tileI + normal.y;
-	int nextTileJ = tileJ + normal.x;
+	uint nextTileI = tileI + normal.y;
+	uint nextTileJ = tileJ + normal.x;
 
 	return isTileSolid(nextTileI, nextTileJ);
 }
